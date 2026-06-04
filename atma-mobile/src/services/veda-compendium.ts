@@ -170,7 +170,8 @@ export function getCurrentDashaBlock(chart: BirthChart): CompendiumBlock {
   const antardasha = PLANET_ARCHETYPES[currentAntardasha];
   const pct = Math.round(mahadashaProgress * 100);
 
-  const nextPeriod = periods.find((p) => p.planet !== currentMahadasha);
+  const currentIdx = periods.findIndex((p) => p.planet === currentMahadasha);
+  const nextPeriod = currentIdx >= 0 ? periods[currentIdx + 1] : undefined;
   const next = nextPeriod ? DASHA_THEMES[nextPeriod.planet] : null;
 
   const body = [

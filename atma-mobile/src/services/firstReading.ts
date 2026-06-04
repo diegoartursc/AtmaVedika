@@ -33,9 +33,11 @@ export function buildFirstReading(chart: BirthChart): ReadingStanza[] {
   const saturnSign = SIGN_ARCHETYPES[saturn.sign];
   const dasha = DASHA_THEMES[chart.vimshottariDasha.currentMahadasha];
   const pct = Math.round(chart.vimshottariDasha.mahadashaProgress * 100);
-  const nextPeriod = chart.vimshottariDasha.periods.find(
-    (p) => p.planet !== chart.vimshottariDasha.currentMahadasha,
+  const periods = chart.vimshottariDasha.periods;
+  const currentIdx = periods.findIndex(
+    (p) => p.planet === chart.vimshottariDasha.currentMahadasha,
   );
+  const nextPeriod = currentIdx >= 0 ? periods[currentIdx + 1] : undefined;
 
   return [
     {

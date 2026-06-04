@@ -67,9 +67,11 @@ function formatDasha(chart: BirthChart): string {
   const antardasha = PLANET_ARCHETYPES[chart.vimshottariDasha.currentAntardasha];
   const pct = Math.round(chart.vimshottariDasha.mahadashaProgress * 100);
 
-  const nextPeriod = chart.vimshottariDasha.periods.find(
-    (p) => p.planet !== chart.vimshottariDasha.currentMahadasha,
+  const currentIdx = chart.vimshottariDasha.periods.findIndex(
+    (p) => p.planet === chart.vimshottariDasha.currentMahadasha,
   );
+  const nextPeriod =
+    currentIdx >= 0 ? chart.vimshottariDasha.periods[currentIdx + 1] : undefined;
   const next = nextPeriod ? DASHA_THEMES[nextPeriod.planet] : null;
 
   const lines = [

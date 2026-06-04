@@ -249,95 +249,21 @@ function buildHousesTheme(chart: BirthChart): VedicTheme {
   };
 }
 
-/** Nome popular + descrição rica pra cada uma das 12 casas. */
-const HOUSE_LORE: Record<
-  number,
-  { popular: string; rules: string; reading: string }
-> = {
-  1: {
-    popular: 'a casa do corpo e da identidade',
-    rules:
-      'A 1ª casa é o portão. É como o mundo te encontra antes de você falar — o corpo, o rosto, o jeito de andar. Tudo começa aqui.',
-    reading:
-      'É o que decide os primeiros 5 segundos da impressão que você causa. Forte aqui = presença magnética.',
-  },
-  2: {
-    popular: 'a casa do dinheiro e da voz',
-    rules:
-      'A 2ª casa é o que você acumula — dinheiro, posses, sua voz, sua família próxima, o que você come, sua autoestima.',
-    reading:
-      'Diz como você ganha valor — pelo trabalho da boca, da mão, da inteligência. E como você cuida do que conquista.',
-  },
-  3: {
-    popular: 'a casa da coragem e dos irmãos',
-    rules:
-      'A 3ª casa governa coragem, esforço pessoal, irmãos, viagens curtas, escrita, comunicação direta.',
-    reading:
-      'É o músculo da iniciativa. Quanto mais forte, mais você começa antes de pedir permissão.',
-  },
-  4: {
-    popular: 'a casa do lar e da mãe',
-    rules:
-      'A 4ª casa é o conforto profundo — a mãe, o lar, a paz interior, a casa que você sente segura.',
-    reading:
-      'Aqui mora a sensação de pertencimento. Tudo que te cura por baixo do silêncio.',
-  },
-  5: {
-    popular: 'a casa da criatividade e do romance',
-    rules:
-      'A 5ª casa traz filhos, criatividade, romance, jogos, inteligência intuitiva, sorte.',
-    reading:
-      'É onde sua alma joga. O que aparece aqui é o que você faz por prazer puro — e o que o mundo curte de você.',
-  },
-  6: {
-    popular: 'a casa dos desafios e da saúde',
-    rules:
-      'A 6ª casa rege inimigos, dívidas, doenças, serviço, rotina, esforço diário.',
-    reading:
-      'É onde a vida cobra disciplina. Forte aqui = imunidade emocional + capacidade de servir sem se perder.',
-  },
-  7: {
-    popular: 'a casa do amor e das parcerias',
-    rules:
-      'A 7ª casa é o espelho. Diz quem você atrai como par — no amor, no negócio, no contrato.',
-    reading:
-      'É a primeira casa do outro. O que aparece aqui é o tipo de pessoa que cruza seu caminho de igual pra igual.',
-  },
-  8: {
-    popular: 'a casa da transformação e do oculto',
-    rules:
-      'A 8ª casa é morte e renascimento, herança, sexualidade profunda, segredos, terapia.',
-    reading:
-      'Forte aqui = capacidade de atravessar mudanças radicais. Aqui mora o que ninguém vê de você.',
-  },
-  9: {
-    popular: 'a casa do sentido e do dharma',
-    rules:
-      'A 9ª casa traz fé, mestres, longas viagens, filosofia, sorte espiritual, pai espiritual.',
-    reading:
-      'É a casa do propósito maior. Tudo que te puxa pra cima sem precisar prometer recompensa.',
-  },
-  10: {
-    popular: 'a casa da carreira e do reconhecimento',
-    rules:
-      'A 10ª casa é o ponto mais alto do céu. Carreira, status, reconhecimento público, pai biológico, autoridade.',
-    reading:
-      'É como o mundo te lembra quando você não está na sala. Forte aqui = autoridade que dura.',
-  },
-  11: {
-    popular: 'a casa dos ganhos e dos amigos',
-    rules:
-      'A 11ª casa rege ganhos, redes, amigos, esperanças, grupos, mentores horizontais.',
-    reading:
-      'É a casa da abundância via comunidade. Onde o coletivo te entrega o que você não conseguiria sozinho.',
-  },
-  12: {
-    popular: 'a casa do desapego e da espiritualidade',
-    rules:
-      'A 12ª casa é perdas, retiro, sonhos, cama, hospitais, exílio, libertação final (moksha).',
-    reading:
-      'É onde você solta. Forte aqui = vida interior rica + intuição que vê o que os outros não veem.',
-  },
+/** Nome popular de cada casa — usado no rótulo "ritual" do card.
+ *  O corpo da leitura vem de getHouseBlock (veda-compendium). */
+const HOUSE_LORE: Record<number, { popular: string }> = {
+  1: { popular: 'a casa do corpo e da identidade' },
+  2: { popular: 'a casa do dinheiro e da voz' },
+  3: { popular: 'a casa da coragem e dos irmãos' },
+  4: { popular: 'a casa do lar e da mãe' },
+  5: { popular: 'a casa da criatividade e do romance' },
+  6: { popular: 'a casa dos desafios e da saúde' },
+  7: { popular: 'a casa do amor e das parcerias' },
+  8: { popular: 'a casa da transformação e do oculto' },
+  9: { popular: 'a casa do sentido e do dharma' },
+  10: { popular: 'a casa da carreira e do reconhecimento' },
+  11: { popular: 'a casa dos ganhos e dos amigos' },
+  12: { popular: 'a casa do desapego e da espiritualidade' },
 };
 
 function buildHouseLayer(h: HouseInfo, chart: BirthChart): ThemeLayer {
@@ -358,26 +284,6 @@ function buildHouseLayer(h: HouseInfo, chart: BirthChart): ThemeLayer {
   };
 }
 
-/** Tom interpretativo conforme planetas presentes na casa. */
-function planetTone(planets: PlanetName[]): string {
-  if (planets.length === 1) {
-    const p = planets[0];
-    const tones: Partial<Record<PlanetName, string>> = {
-      Sun: 'autoridade silenciosa que se manifesta nessa área',
-      Moon: 'fluxo emocional rico, sensibilidade marcante',
-      Mars: 'urgência e ação direta, pode acender conflitos',
-      Mercury: 'mente afiada operando nessa esfera',
-      Jupiter: 'expansão natural, benção sem esforço',
-      Venus: 'beleza e prazer encontram lar aqui',
-      Saturn: 'tempo e disciplina pesam — entrega vem depois da prova',
-      Rahu: 'obsessão, fome, intensidade que assusta',
-      Ketu: 'desapego, sabedoria silenciosa, lições kármicas',
-    };
-    return tones[p] ?? 'energia singular nessa área';
-  }
-  return 'energias se misturam — observe quem fala mais alto no momento';
-}
-
 // ─── 3. Planetas (9 grahas) ──────────────────────────────
 
 const PLANET_ORDER: PlanetName[] = [
@@ -391,76 +297,6 @@ const PLANET_ORDER: PlanetName[] = [
   'Rahu',
   'Ketu',
 ];
-
-/** Mito + função psicológica de cada planeta. */
-const PLANET_LORE: Record<
-  PlanetName,
-  { myth: string; signFlavor: (sign: string) => string; insight: string }
-> = {
-  Sun: {
-    myth: 'O Sol é o pai, a autoridade interna, o eixo da consciência. No Jyotish é chamado de atma — a centelha que faz você ser você. Onde o Sol brilha, sua vontade fala alto.',
-    signFlavor: (s) =>
-      `Em ${s}, o Sol expressa identidade com o tom desse signo — quem você é quando ninguém manda.`,
-    insight:
-      'Você não precisa convencer. Precisa só aparecer. O brilho vem de dentro.',
-  },
-  Moon: {
-    myth: 'A Lua é a mãe interna, o emocional inconsciente, a primeira reação antes da palavra. É o que sente antes de pensar. É o nakshatra que define o tom da sua vida emocional.',
-    signFlavor: (s) =>
-      `Em ${s}, a Lua sente como esse signo — seu emocional opera com essa cor de fundo.`,
-    insight:
-      'Confie no que sente. Sua intuição entende mais que sua razão.',
-  },
-  Mars: {
-    myth: 'Marte é o guerreiro — ação direta, ambição, conflito, força física, esporte. É o músculo que corta o que precisa cair.',
-    signFlavor: (s) =>
-      `Em ${s}, Marte luta no estilo desse signo — observe como você briga, defende e conquista.`,
-    insight:
-      'Marte forte = iniciativa. Use pra começar, não pra brigar.',
-  },
-  Mercury: {
-    myth: 'Mercúrio é o mensageiro — comunicação, mente analítica, escrita, comércio, juventude. É a velocidade do pensamento.',
-    signFlavor: (s) =>
-      `Em ${s}, Mercúrio fala com o sotaque desse signo — sua forma de explicar o mundo.`,
-    insight:
-      'Mercúrio bem posicionado = palavra que abre portas. Cuide do que diz.',
-  },
-  Jupiter: {
-    myth: 'Júpiter é o guru — expansão, fé, sabedoria, mestres, viagens largas, abundância. O grande benéfico, planeta da bênção sem esforço.',
-    signFlavor: (s) =>
-      `Em ${s}, Júpiter abençoa as áreas regidas por esse signo — onde a vida flui com generosidade.`,
-    insight:
-      'Júpiter te dá o que merece crescer. Confie no que ele toca.',
-  },
-  Venus: {
-    myth: 'Vênus é a deusa — prazer, beleza, vínculos, dinheiro, amor romântico, arte, refinamento.',
-    signFlavor: (s) =>
-      `Em ${s}, Vênus ama no estilo desse signo — o que você acha bonito e como vive afeto.`,
-    insight:
-      'Vênus forte = vida cheia de prazer estético. Vênus aflita = aprende a amar.',
-  },
-  Saturn: {
-    myth: 'Saturno é o velho, o guardião do tempo, o juiz interno. Disciplina, responsabilidade, trabalho duro, maturação. Quem testa antes de entregar.',
-    signFlavor: (s) =>
-      `Em ${s}, Saturno cobra com a justiça desse signo — onde a vida exige paciência.`,
-    insight:
-      'Saturno só dá o que aguenta provar. Mas o que ele dá, fica.',
-  },
-  Rahu: {
-    myth: 'Rahu é o nó norte da Lua, a cabeça sem corpo. Obsessão, fome material, ascensão social, ilusão. Quer tudo, devora rápido.',
-    signFlavor: (s) =>
-      `Em ${s}, Rahu obceca pelo terreno desse signo — onde sua alma quer ir nesta vida.`,
-    insight:
-      'Rahu é direção, não destino. Vá fundo, mas saiba quando parar.',
-  },
-  Ketu: {
-    myth: 'Ketu é o nó sul da Lua, o corpo sem cabeça. Desapego, espiritualidade, perdas, sabedoria de outras vidas.',
-    signFlavor: (s) =>
-      `Em ${s}, Ketu liberta da área regida por esse signo — onde você já viveu o suficiente.`,
-    insight:
-      'Ketu não tira pra punir. Tira pra abrir espaço pro novo.',
-  },
-};
 
 function buildPlanetsTheme(chart: BirthChart): VedicTheme {
   return {

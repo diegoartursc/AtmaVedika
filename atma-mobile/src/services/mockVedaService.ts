@@ -22,9 +22,10 @@ const TEMPLATES: Template[] = [
     build: (_, c) => {
       const { currentMahadasha, mahadashaProgress } = c.vimshottariDasha;
       const pct = Math.round(mahadashaProgress * 100);
-      const next = c.vimshottariDasha.periods.find(
-        (p) => p.planet !== currentMahadasha,
+      const curIdx = c.vimshottariDasha.periods.findIndex(
+        (p) => p.planet === currentMahadasha,
       );
+      const next = curIdx >= 0 ? c.vimshottariDasha.periods[curIdx + 1] : undefined;
       return `Você está em ${pct}% da Mahadasha de ${currentMahadasha}. Isso não é meio — é a fase em que o que ${currentMahadasha} construiu já está sendo testado. ${next ? `Quando ${next.planet} chegar, o que parecia importante vai deixar de ser.` : ''} A pergunta que te empurra a perguntar isso vem do peso de saber que o ciclo vira. Não tente apressar.`;
     },
   },
