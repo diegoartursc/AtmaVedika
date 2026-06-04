@@ -17,8 +17,18 @@
  */
 
 import { palette } from '@/theme/colors';
-import { buildLifeAreas } from '@/services/lifeAreas';
-import { detectYogas } from '@/services/yogas';
+import {
+  getHouseBlock,
+  getPlanetBlock,
+  getMoonNakshatraBlock,
+  getCurrentDashaBlock,
+  getLoveBlock,
+  getCareerBlock,
+  getMoneyBlock,
+  getHealthBlock,
+  getFamilyBlock,
+  getYogaBlocks,
+} from '@/services/veda-compendium';
 import type {
   BirthChart,
   HouseInfo,
@@ -130,7 +140,7 @@ function buildOverviewTheme(chart: BirthChart): VedicTheme {
         ritual: '✦  mente  ✦',
         title: `Lua em\n${signPt(chart.planets.Moon.sign)}.`,
         subtitle: `Nakshatra ${moon.name}, pada ${moon.pada}.`,
-        body: 'A Lua é o seu emocional — como você sente antes de pensar. O nakshatra natal é a textura por trás dessa sensação.',
+        body: getMoonNakshatraBlock(chart).body,
         metric: { label: 'nakshatra', value: moon.name },
       },
       {
@@ -150,7 +160,7 @@ function buildOverviewTheme(chart: BirthChart): VedicTheme {
 // ─── Yogas (combinações kármicas) ────────────────────────
 
 function buildYogasTheme(chart: BirthChart): VedicTheme {
-  const yogas = detectYogas(chart);
+  const yogaBlocks = getYogaBlocks(chart);
   return {
     id: 'yogas',
     symbol: '✶',
@@ -162,17 +172,16 @@ function buildYogasTheme(chart: BirthChart): VedicTheme {
         ritual: '✦  capítulo  ✦',
         title: 'Yogas\nkármicas.',
         caption:
-          'As combinações raras do seu mapa. Forças que se ativam em momentos específicos da vida — Raj Yoga, Dhana, Sade Sati, Mahapurusha.',
+          'As combinações raras do seu mapa. Forças que se ativam em momentos específicos da vida — Raj Yoga, Dhana, Gajakesari, Viparita.',
       }),
-      ...(yogas.length > 0
-        ? yogas.map((y) => ({
-            id: `yoga-${y.kind}-${y.subtype ?? ''}`,
-            ritual: `✦  ${y.name.toLowerCase()}  ✦`,
-            title: y.title,
-            subtitle: y.subtitle,
-            body: y.body,
-            metric: y.metric,
-            symbolOverride: y.symbol,
+      ...(yogaBlocks.length > 0
+        ? yogaBlocks.map((b) => ({
+            id: b.id,
+            ritual: `✦  ${b.title.toLowerCase()}  ✦`,
+            title: b.title,
+            subtitle: b.subtitle,
+            body: b.body,
+            symbolOverride: b.symbol,
           }))
         : [
             {
@@ -191,7 +200,13 @@ function buildYogasTheme(chart: BirthChart): VedicTheme {
 // ─── 2.5 Áreas da Vida ───────────────────────────────────
 
 function buildLifeAreasTheme(chart: BirthChart): VedicTheme {
-  const areas = buildLifeAreas(chart);
+  const blocks = [
+    { ritual: '✦  amor  ✦',     block: getLoveBlock(chart) },
+    { ritual: '✦  dinheiro  ✦', block: getMoneyBlock(chart) },
+    { ritual: '✦  carreira  ✦', block: getCareerBlock(chart) },
+    { ritual: '✦  saúde  ✦',    block: getHealthBlock(chart) },
+    { ritual: '✦  família  ✦',  block: getFamilyBlock(chart) },
+  ];
   return {
     id: 'life-areas',
     symbol: '❤',
@@ -204,14 +219,13 @@ function buildLifeAreasTheme(chart: BirthChart): VedicTheme {
         title: 'Sua vida\nem 5 áreas.',
         caption: 'Amor, dinheiro, carreira, saúde, família. Cada uma cruzando casas e planetas do seu mapa.',
       }),
-      ...areas.map((a) => ({
-        id: `life-${a.id}`,
-        ritual: a.ritual,
-        title: a.title,
-        subtitle: a.subtitle,
-        body: a.body,
-        metric: a.metric,
-        symbolOverride: a.symbol,
+      ...blocks.map(({ ritual, block }) => ({
+        id: block.id,
+        ritual,
+        title: block.title,
+        subtitle: block.subtitle,
+        body: block.body,
+        symbolOverride: block.symbol,
       })),
     ],
   };
@@ -230,7 +244,7 @@ function buildHousesTheme(chart: BirthChart): VedicTheme {
         title: 'As 12 casas.',
         caption: 'Os bhavas — as 12 áreas da vida onde tudo acontece. Da identidade ao desapego.',
       }),
-      ...chart.houses.map(buildHouseLayer),
+      ...chart.houses.map((h) => buildHouseLayer(h, chart)),
     ],
   };
 }
@@ -326,24 +340,14 @@ const HOUSE_LORE: Record<
   },
 };
 
-function buildHouseLayer(h: HouseInfo): ThemeLayer {
+function buildHouseLayer(h: HouseInfo, chart: BirthChart): ThemeLayer {
   const lore = HOUSE_LORE[h.number];
-  const inhabitants =
-    h.planetsIn.length === 0
-      ? `Sem planetas habitando — a leitura vem do regente do signo, ${planetPt(h.signLord)}.`
-      : `Habitada por ${h.planetsIn.map(planetPt).join(' e ')} — ${planetTone(h.planetsIn)}.`;
-
-  const body =
-    `${lore.rules}\n\n` +
-    `No seu mapa, está em ${signPt(h.sign)}, regida por ${planetPt(h.signLord)}. ${inhabitants}\n\n` +
-    `${lore.reading}`;
-
   return {
     id: `house-${h.number}`,
     ritual: `✦  Casa ${h.number} · ${lore.popular}  ✦`,
     title: `${ordinal(h.number)} casa.\n${h.bhavaName}.`,
     subtitle: `${signPt(h.sign)} · regente ${planetPt(h.signLord)}.`,
-    body,
+    body: getHouseBlock(chart, h.number).body,
     metric: {
       label: h.planetsIn.length === 0 ? 'regente' : 'habitantes',
       value:
@@ -472,33 +476,20 @@ function buildPlanetsTheme(chart: BirthChart): VedicTheme {
         caption: 'Os planetas védicos. Cada um carrega uma função na sua psique. Conheça o tom de cada um no seu mapa.',
       }),
       ...PLANET_ORDER.map((name) =>
-        buildPlanetLayer(name, chart.planets[name]),
+        buildPlanetLayer(name, chart.planets[name], chart),
       ),
     ],
   };
 }
 
-function buildPlanetLayer(name: PlanetName, p: PlanetPosition): ThemeLayer {
+function buildPlanetLayer(name: PlanetName, p: PlanetPosition, chart: BirthChart): ThemeLayer {
   const retro = p.retrograde ? ' retrógrado' : '';
-  const lore = PLANET_LORE[name];
-  const houseLore = HOUSE_LORE[p.house];
-
-  const body =
-    `${lore.myth}\n\n` +
-    `${lore.signFlavor(signPt(p.sign))} ` +
-    `Habita a ${ordinal(p.house)} casa — ${houseLore?.popular ?? ''}. ${
-      p.retrograde
-        ? 'Retrógrado: as lições desse planeta vêm de dentro, em revisão.'
-        : ''
-    }\n\n` +
-    `${lore.insight}`;
-
   return {
     id: `planet-${name.toLowerCase()}`,
     ritual: `✦  ${planetPt(name)}${retro}  ✦`,
     title: `${planetPt(name)}\nem ${signPt(p.sign)}.`,
     subtitle: `${ordinal(p.house)} casa · ${p.degree.toFixed(1)}°.`,
-    body,
+    body: getPlanetBlock(chart, name).body,
     metric: {
       label: 'posição',
       value: `${signPt(p.sign)} · ${ordinal(p.house)} casa`,
@@ -620,7 +611,7 @@ function buildMahadashaTheme(chart: BirthChart): VedicTheme {
         ritual: '✦  Mahadasha atual  ✦',
         title: `${planetPt(dasha.currentMahadasha)}.`,
         subtitle: `${pct}% concluído.`,
-        body: 'Os últimos anos foram sobre este planeta — mesmo que você não tenha visto o nome.',
+        body: getCurrentDashaBlock(chart).body,
         metric: { label: 'progresso', value: `${pct}%` },
         visual: {
           kind: 'progressArc',

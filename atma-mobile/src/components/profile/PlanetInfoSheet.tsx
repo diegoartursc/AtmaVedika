@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/primitives/Text';
 import { SacredButton } from '@/components/primitives/SacredButton';
+import { PLANET_ARCHETYPES } from '@/services/vedic-knowledge';
 import { palette, semantic } from '@/theme/colors';
 import { duration } from '@/theme/motion';
 import { radii } from '@/theme/radii';
@@ -144,6 +145,25 @@ export function PlanetInfoSheet({
               </Text>
             </>
           )}
+
+          <View style={{ height: spacing.lg }} />
+          <View style={styles.archetypeBlock}>
+            <Text variant="ritual" color={semantic.textTertiary}>
+              arquétipo · compêndio védico
+            </Text>
+            <View style={{ height: spacing.sm }} />
+            <Text variant="bodyEmphasis" color={planet.visual.color} align="left">
+              {PLANET_ARCHETYPES[planet.name].keyword}
+            </Text>
+            <View style={{ height: spacing.xs }} />
+            <Text variant="caption" color={semantic.textSecondary} align="left">
+              {PLANET_ARCHETYPES[planet.name].governs}
+            </Text>
+            <View style={{ height: spacing.sm }} />
+            <Text variant="caption" color={semantic.textTertiary} align="left">
+              Sombra: {PLANET_ARCHETYPES[planet.name].shadow}
+            </Text>
+          </View>
 
           {aspects.length > 0 && (
             <>
@@ -294,5 +314,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(212,175,55,0.05)',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: semantic.border,
+  },
+  archetypeBlock: {
+    padding: spacing.md,
+    borderRadius: radii.base,
+    backgroundColor: 'rgba(245,244,240,0.03)',
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(245,244,240,0.08)',
   },
 });

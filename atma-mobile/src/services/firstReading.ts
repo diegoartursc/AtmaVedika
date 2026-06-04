@@ -1,11 +1,20 @@
 /**
- * Atma Vedika — First Reading Generator (mock)
+ * Atma Vedika — First Reading Generator
  *
- * Em produção: chama o backend que chama Claude/GPT.
- * Aqui: compõe estrofes a partir do BirthChart real (mock).
+ * Compõe as estrofes do onboarding a partir dos dados
+ * pesquisados no compêndio védico (vedic-knowledge.ts).
+ *
+ * Em produção: será substituída por resposta do Claude Sonnet 4.6
+ * via buildVedaSystemPrompt, mantendo a mesma estrutura ReadingStanza[].
  */
 
 import type { BirthChart } from '@/types/chart';
+import {
+  NAKSHATRA_MEANINGS,
+  PLANET_ARCHETYPES,
+  SIGN_ARCHETYPES,
+  DASHA_THEMES,
+} from './vedic-knowledge';
 
 export interface ReadingStanza {
   /** Identificador semântico (usado por animações se preciso). */
@@ -17,37 +26,61 @@ export interface ReadingStanza {
 }
 
 export function buildFirstReading(chart: BirthChart): ReadingStanza[] {
-  const moonNakshatra = chart.moonNakshatra.name;
-  const moonRuler = chart.moonNakshatra.ruler;
-  const ascendant = chart.ascendant;
+  const moonNak = NAKSHATRA_MEANINGS[chart.moonNakshatra.name];
+  const moonRuler = PLANET_ARCHETYPES[chart.moonNakshatra.ruler];
+  const ascSign = SIGN_ARCHETYPES[chart.ascendant];
   const saturn = chart.planets.Saturn;
-  const venus = chart.planets.Venus;
-  const dasha = chart.vimshottariDasha;
-  const nextDasha = dasha.periods.find(
-    (p) => p.planet !== dasha.currentMahadasha,
+  const saturnSign = SIGN_ARCHETYPES[saturn.sign];
+  const dasha = DASHA_THEMES[chart.vimshottariDasha.currentMahadasha];
+  const pct = Math.round(chart.vimshottariDasha.mahadashaProgress * 100);
+  const nextPeriod = chart.vimshottariDasha.periods.find(
+    (p) => p.planet !== chart.vimshottariDasha.currentMahadasha,
   );
 
   return [
     {
       id: 'nakshatra',
-      text: `Você nasceu sob a Lua em ${moonNakshatra}.\nO nakshatra regido por ${moonRuler}.\nÉ por isso que você sente antes de pensar.`,
+      text:
+        `Lua em ${chart.moonNakshatra.name}.\n` +
+        `Regida por ${moonRuler.pt} — ${moonRuler.keyword}.\n\n` +
+        `${moonNak.keyword}.`,
       variant: 'sacred',
     },
     {
+      id: 'gift',
+      text: moonNak.gift,
+      variant: 'bodyLarge',
+    },
+    {
+      id: 'shadow',
+      text: `Mas também: ${moonNak.shadow}`,
+      variant: 'bodyLarge',
+    },
+    {
       id: 'ascendant',
-      text: `Seu Ascendente é ${ascendant}.\nEste é o portão pelo qual o mundo te vê — e pelo qual seu dharma se manifesta.`,
+      text:
+        `Ascendente em ${ascSign.pt}.\n` +
+        `${ascSign.keyword} — ${ascSign.nature}.`,
       variant: 'sacred',
     },
     {
       id: 'saturn',
-      text: `Saturno em ${saturn.sign}${saturn.retrograde ? ', retrógrado' : ''}, na sua ${ordinal(saturn.house)} casa.\nVocê vai amar tarde. Mas vai amar fundo.`,
+      text:
+        `Saturno em ${saturnSign.pt}${saturn.retrograde ? ', retrógrado' : ''}, ` +
+        `${ordinal(saturn.house)} casa.\n\n` +
+        `${PLANET_ARCHETYPES.Saturn.keyword}.\n` +
+        `${PLANET_ARCHETYPES.Saturn.shadow}.`,
       variant: 'sacred',
     },
     {
       id: 'dasha',
-      text: `Seu Mahadasha atual é ${dasha.currentMahadasha}.${
-        nextDasha ? ` Depois dele, ${nextDasha.planet} assume.` : ''
-      }\nO que está escondido virá à tona quando esse ciclo virar.`,
+      text:
+        `Mahadasha de ${dasha.pt} — ${pct}% concluído.\n\n` +
+        `${dasha.theme}.\n\n` +
+        `${dasha.invitation}.` +
+        (nextPeriod
+          ? `\n\nDepois, ${DASHA_THEMES[nextPeriod.planet].pt}.`
+          : ''),
       variant: 'sacred',
     },
     {
@@ -56,24 +89,13 @@ export function buildFirstReading(chart: BirthChart): ReadingStanza[] {
       variant: 'title',
     },
   ];
-
-  void venus;
 }
 
 function ordinal(n: number): string {
   const map: Record<number, string> = {
-    1: 'primeira',
-    2: 'segunda',
-    3: 'terceira',
-    4: 'quarta',
-    5: 'quinta',
-    6: 'sexta',
-    7: 'sétima',
-    8: 'oitava',
-    9: 'nona',
-    10: 'décima',
-    11: 'décima primeira',
-    12: 'décima segunda',
+    1: 'primeira', 2: 'segunda', 3: 'terceira', 4: 'quarta',
+    5: 'quinta', 6: 'sexta', 7: 'sétima', 8: 'oitava',
+    9: 'nona', 10: 'décima', 11: 'décima primeira', 12: 'décima segunda',
   };
   return map[n] ?? `${n}ª`;
 }
