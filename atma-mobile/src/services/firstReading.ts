@@ -71,7 +71,7 @@ export function buildFirstReading(chart: BirthChart): ReadingStanza[] {
         `Saturno em ${saturnSign.pt}${saturn.retrograde ? ', retrógrado' : ''}, ` +
         `${ordinal(saturn.house)} casa.\n\n` +
         `${PLANET_ARCHETYPES.Saturn.keyword}.\n` +
-        `${PLANET_ARCHETYPES.Saturn.shadow}.`,
+        `Ele cobra disciplina e tempo — mas o que ele constrói, constrói pra durar.`,
       variant: 'sacred',
     },
     {

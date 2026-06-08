@@ -116,9 +116,10 @@ export const mockBirthChart: BirthChart = {
   },
 
   vimshottariDasha: {
-    currentMahadasha: 'Venus',
-    currentAntardasha: 'Mercury',
-    mahadashaProgress: 0.62,
+    // Hoje (2026) cai no período do Sol (2020–2026), perto da virada pra Lua.
+    currentMahadasha: 'Sun',
+    currentAntardasha: 'Venus',
+    mahadashaProgress: 0.97,
     periods: [
       {
         planet: 'Ketu',

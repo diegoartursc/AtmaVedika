@@ -103,7 +103,9 @@ function MantraLine({ text, active, past }: MantraLineProps) {
   const translateY = useSharedValue(8);
 
   useEffect(() => {
-    opacity.value = withTiming(active ? 1 : past ? 0.25 : 0, {
+    // Todos os mantras dividem o mesmo slot absoluto — só o ativo pode
+    // ficar visível, senão o anterior "vaza" por trás (opacidade residual).
+    opacity.value = withTiming(active ? 1 : 0, {
       duration: duration.smooth,
       easing: Easing.bezier(0.16, 1, 0.3, 1),
     });
