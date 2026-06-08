@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
   interpolate,
@@ -76,42 +76,49 @@ export function ThemeLayerCard({
   if (layer.isCover) {
     return (
       <View style={styles.container}>
-        <Animated.View style={[styles.content, contentStyle]}>
-          <Text variant="ritual" color={accent} align="center">
-            {layer.ritual}
-          </Text>
-
-          <View style={styles.gapLarge} />
-
-          <Text
-            style={[
-              styles.coverSymbol,
-              { color: accent, textShadowColor: accent },
-            ]}
+        <Animated.View style={[styles.animatedFill, contentStyle]}>
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            bounces={false}
           >
-            {displaySymbol}
-          </Text>
+            <Text variant="ritual" color={accent} align="center">
+              {layer.ritual}
+            </Text>
 
-          <View style={styles.gapLarge} />
+            <View style={styles.gapLarge} />
 
-          <Text variant="hero" color={semantic.textPrimary} align="center">
-            {layer.title}
-          </Text>
+            <Text
+              style={[
+                styles.coverSymbol,
+                { color: accent, textShadowColor: accent },
+              ]}
+            >
+              {displaySymbol}
+            </Text>
 
-          {layer.body ? (
-            <>
-              <View style={styles.gapLarge} />
-              <View style={styles.coverCaption}>
-                <Text variant="sacred" color={semantic.textTertiary} align="center">
-                  {layer.body}
-                </Text>
-              </View>
-            </>
-          ) : null}
+            <View style={styles.gapLarge} />
 
-          <View style={styles.gapLarge} />
+            <Text variant="hero" color={semantic.textPrimary} align="center">
+              {layer.title}
+            </Text>
 
-          <SwipeHint accent={accent} />
+            {layer.body ? (
+              <>
+                <View style={styles.gapLarge} />
+                <View style={styles.coverCaption}>
+                  <Text variant="sacred" color={semantic.textTertiary} align="center">
+                    {layer.body}
+                  </Text>
+                </View>
+              </>
+            ) : null}
+
+            <View style={styles.gapLarge} />
+
+            <SwipeHint accent={accent} />
+          </ScrollView>
         </Animated.View>
       </View>
     );
@@ -119,7 +126,13 @@ export function ThemeLayerCard({
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.content, contentStyle]}>
+      <Animated.View style={[styles.animatedFill, contentStyle]}>
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+        >
         <Text variant="ritual" color={accent} align="center">
           {layer.ritual}
         </Text>
@@ -194,6 +207,7 @@ export function ThemeLayerCard({
             </View>
           </>
         ) : null}
+        </ScrollView>
       </Animated.View>
     </View>
   );
@@ -313,12 +327,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: spacing.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
-  content: {
+  animatedFill: {
+    flex: 1,
+    width: '100%',
+  },
+  scroll: {
+    flex: 1,
+    width: '100%',
+  },
+  scrollContent: {
+    flexGrow: 1,
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.xl,
   },
   iconSlot: {
     minHeight: 120,

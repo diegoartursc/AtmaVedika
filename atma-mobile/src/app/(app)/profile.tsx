@@ -229,7 +229,10 @@ export default function ProfileScreen() {
             <View style={styles.statsDivider} />
             <Stat label="sol" value={SIGN_PT[chart.planets.Sun.sign] ?? chart.planets.Sun.sign} />
             <View style={styles.statsDivider} />
-            <Stat label="lua" value={chart.moonNakshatra.name} />
+            <Stat
+              label="lua"
+              value={`${SIGN_PT[chart.planets.Moon.sign] ?? chart.planets.Moon.sign} (${chart.moonNakshatra.name})`}
+            />
           </View>
 
           <SettingSection title="conta" index={0}>

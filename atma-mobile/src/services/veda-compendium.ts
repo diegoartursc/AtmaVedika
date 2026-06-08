@@ -67,6 +67,11 @@ function ordinal(n: number): string {
   return map[n] ?? `${n}ª`;
 }
 
+/** Primeira letra maiúscula — pra usar trechos do compêndio como frase. */
+function cap(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 // ─── Nakshatras ──────────────────────────────────────────────
 
 export function getMoonNakshatraBlock(chart: BirthChart): CompendiumBlock {
@@ -75,17 +80,13 @@ export function getMoonNakshatraBlock(chart: BirthChart): CompendiumBlock {
   const rulerArch = PLANET_ARCHETYPES[ruler];
 
   const body = [
-    `${nak.keyword.charAt(0).toUpperCase() + nak.keyword.slice(1)}.`,
+    `${cap(nak.keyword)}. É sob ${nak.deity} que sua Lua nasceu, no símbolo de ${nak.symbol}, entre ${nak.degrees}.`,
     '',
-    `Divindade regente: ${nak.deity}.`,
-    `Símbolo sagrado: ${nak.symbol}.`,
-    `Graus: ${nak.degrees}.`,
+    `Seu dom — ${nak.gift}.`,
     '',
-    `Dom: ${nak.gift}.`,
+    `Sua sombra — ${nak.shadow}.`,
     '',
-    `Sombra: ${nak.shadow}.`,
-    '',
-    `Regente ${rulerArch.pt}: ${rulerArch.keyword}. ${rulerArch.governs}.`,
+    `${rulerArch.pt} rege esse chão: ${rulerArch.keyword.toLowerCase()}, e governa ${rulerArch.governs}.`,
   ].join('\n');
 
   return {
@@ -106,16 +107,13 @@ export function getSunNakshatraBlock(chart: BirthChart): CompendiumBlock {
   const rulerArch = PLANET_ARCHETYPES[ruler];
 
   const body = [
-    `${nak.keyword.charAt(0).toUpperCase() + nak.keyword.slice(1)}.`,
+    `${cap(nak.keyword)}. Aqui mora o seu propósito, sob ${nak.deity}, entre ${nak.degrees}.`,
     '',
-    `Divindade regente: ${nak.deity}.`,
-    `Graus: ${nak.degrees}.`,
+    `Seu dom — ${nak.gift}.`,
     '',
-    `Dom: ${nak.gift}.`,
+    `Sua sombra — ${nak.shadow}.`,
     '',
-    `Sombra: ${nak.shadow}.`,
-    '',
-    `Regente ${rulerArch.pt}: ${rulerArch.keyword}. Governa ${rulerArch.governs}.`,
+    `${rulerArch.pt} ilumina esse ponto: ${rulerArch.keyword.toLowerCase()}, e governa ${rulerArch.governs}.`,
   ].join('\n');
 
   return {
@@ -137,16 +135,13 @@ export function getAscendantNakshatraBlock(chart: BirthChart): CompendiumBlock {
   const ascSign = SIGN_ARCHETYPES[chart.ascendant];
 
   const body = [
-    `Seu Ascendente está em ${ascSign.pt} (${ascSign.keyword}), no nakshatra ${name}.`,
+    `Seu Ascendente nasce em ${ascSign.pt} — ${ascSign.keyword} — dentro do nakshatra ${name}. ${cap(nak.keyword)}.`,
     '',
-    `${nak.keyword.charAt(0).toUpperCase() + nak.keyword.slice(1)}.`,
+    `Seu dom — ${nak.gift}.`,
     '',
-    `Dom: ${nak.gift}.`,
+    `Sua sombra — ${nak.shadow}.`,
     '',
-    `Sombra: ${nak.shadow}.`,
-    '',
-    `Regente ${rulerArch.pt}: ${rulerArch.keyword}.`,
-    `Natureza do ascendente ${ascSign.pt}: ${ascSign.nature}.`,
+    `${rulerArch.pt} é quem rege esse portal: ${rulerArch.keyword.toLowerCase()}. E ${ascSign.pt} dá o tom de tudo — ${ascSign.nature}.`,
   ].join('\n');
 
   return {
@@ -175,22 +170,17 @@ export function getCurrentDashaBlock(chart: BirthChart): CompendiumBlock {
   const next = nextPeriod ? DASHA_THEMES[nextPeriod.planet] : null;
 
   const body = [
-    `Você está a ${pct}% do Mahadasha de ${dasha.pt} — um ciclo de ${dasha.duration} anos.`,
+    `Você está a ${pct}% do Mahadasha de ${dasha.pt}, um ciclo de ${dasha.duration} anos. É um tempo de ${dasha.theme}.`,
     '',
-    `Tema central: ${dasha.theme}.`,
+    `O período acende ${dasha.activates}.`,
     '',
-    `O que este período ativa: ${dasha.activates}.`,
+    `O convite é claro: ${dasha.invitation}. O desafio, igualmente: ${dasha.challenge}.`,
     '',
-    `Convite kármico: ${dasha.invitation}.`,
-    '',
-    `Desafio central: ${dasha.challenge}.`,
-    '',
-    `Antardasha atual: ${antardasha.pt} (${antardasha.keyword}).`,
+    `Por dentro dele corre a antardasha de ${antardasha.pt} — ${antardasha.keyword.toLowerCase()} —, o sub-período que colore o agora.`,
     ...(next && nextPeriod
       ? [
           '',
-          `Próximo Mahadasha: ${next.pt}, a partir de ${nextPeriod.startDate}.`,
-          `Tema que se aproxima: ${next.theme}.`,
+          `Adiante, a partir de ${nextPeriod.startDate}, entra ${next.pt}: ${next.theme}.`,
         ]
       : []),
   ].join('\n');
@@ -219,22 +209,16 @@ export function getPlanetBlock(
   const house = HOUSE_MEANINGS[pos.house];
 
   const body = [
-    `${arch.pt} em ${sign.pt}, ${ordinal(pos.house)} casa (${house.sanskrit}).`,
+    `${arch.pt} é ${arch.keyword.toLowerCase()} — governa ${arch.governs}. No seu mapa, ele se instala em ${sign.pt}, na ${ordinal(pos.house)} casa (${house.sanskrit}).`,
     '',
-    `Arquétipo de ${arch.pt}: ${arch.keyword}.`,
-    `Governa: ${arch.governs}.`,
-    '',
-    `${sign.pt} (${sign.quality}, ${sign.element}): ${sign.nature}.`,
-    '',
-    `${house.sanskrit} — ${house.topic}.`,
-    `Significadores desta casa: ${house.significators}.`,
+    `${sign.pt} dá a cor: ${sign.nature} (${sign.quality}, ${sign.element}). A casa dá o palco — ${house.topic}.`,
     '',
     ...(pos.retrograde
-      ? [`Retrógrado: a energia de ${arch.pt} está voltada para dentro. Karma a revisitar e integrar.`, '']
+      ? [`Retrógrado, a energia de ${arch.pt} olha para dentro: é um karma a revisitar e integrar, não a estrear.`, '']
       : []),
-    `Sombra de ${arch.pt}: ${arch.shadow}.`,
+    `Quando desalinhado, ${arch.pt} mostra a sombra — ${arch.shadow}.`,
     '',
-    `Exaltação: ${arch.exaltation}. Debilitação: ${arch.debilitation}.`,
+    `Ele se eleva em ${SIGN_ARCHETYPES[arch.exaltation].pt} e se enfraquece em ${SIGN_ARCHETYPES[arch.debilitation].pt}.`,
   ].join('\n');
 
   return {
@@ -268,28 +252,23 @@ export function getHouseBlock(
   const lord = PLANET_ARCHETYPES[houseInfo.signLord];
   const lordPos = chart.planets[houseInfo.signLord];
 
-  const planetLines =
+  const occupancy =
     houseInfo.planetsIn.length > 0
-      ? houseInfo.planetsIn.map((p) => {
-          const a = PLANET_ARCHETYPES[p];
-          return `• ${a.pt} aqui: ${a.keyword}. Governa ${a.governs}.`;
-        })
-      : ['• Vazia — lida pelo regente.'];
+      ? `Aqui habita${houseInfo.planetsIn.length > 1 ? 'm' : ''} ${houseInfo.planetsIn
+          .map((p) => PLANET_ARCHETYPES[p].pt)
+          .join(' e ')} — ${houseInfo.planetsIn
+          .map((p) => PLANET_ARCHETYPES[p].keyword.toLowerCase())
+          .join('; ')}.`
+      : `Nenhum planeta habita esta casa, então ela se lê pelo regente, ${lord.pt}.`;
 
   const body = [
-    `${meaning.sanskrit} — ${meaning.topic}.`,
+    `${meaning.sanskrit}, a casa de ${meaning.topic}.`,
     '',
-    `Signo: ${sign.pt} (${sign.keyword}, ${sign.element}, ${sign.quality}).`,
-    `Natureza: ${sign.nature}.`,
+    `Ela se abre em ${sign.pt} — ${sign.nature} (${sign.element}, ${sign.quality}). Quem a rege é ${lord.pt}, ${lord.keyword.toLowerCase()}, posicionado na ${ordinal(lordPos.house)} casa.`,
     '',
-    `Regente: ${lord.pt} (${lord.keyword}), posicionado na ${ordinal(lordPos.house)} casa.`,
-    `${lord.governs}.`,
+    occupancy,
     '',
-    `Planetas presentes:`,
-    ...planetLines,
-    '',
-    `Significadores clássicos desta casa: ${meaning.significators}.`,
-    `Tipo: ${meaning.type}.`,
+    `Na tradição, esta bhava responde por ${meaning.significators}; é uma casa do tipo ${meaning.type}.`,
   ].join('\n');
 
   return {
@@ -326,13 +305,11 @@ export function getYogaBlocks(chart: BirthChart): CompendiumBlock[] {
       title: 'Gajakesari Yoga',
       subtitle: `Júpiter (Casa ${jup.house}) + Lua (Casa ${moon.house}) em kendra`,
       body: [
-        `Definição: ${yoga.definition}.`,
+        `${cap(yoga.definition)}.`,
         '',
-        `No seu mapa: Júpiter está na ${ordinal(jup.house)} casa e a Lua na ${ordinal(moon.house)} casa — em relação kendra entre si.`,
+        `No seu mapa ele se forma: Júpiter na ${ordinal(jup.house)} casa e a Lua na ${ordinal(moon.house)}, guardando entre si uma relação de kendra.`,
         '',
-        `Efeito: ${yoga.effect}.`,
-        '',
-        `Ativação: ${yoga.activation}.`,
+        `O que ele traz — ${yoga.effect}. E se ativa com ${yoga.activation.toLowerCase()}.`,
       ].join('\n'),
       accent: '#10B981',
       symbol: '♃☽',
@@ -351,20 +328,18 @@ export function getYogaBlocks(chart: BirthChart): CompendiumBlock[] {
   }
   if (rajPlanets.length > 0) {
     const yoga = KEY_YOGAS.rajYoga;
-    const names = rajPlanets.map((p) => PLANET_ARCHETYPES[p].pt).join(', ');
+    const names = rajPlanets.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ');
     blocks.push({
       id: 'yoga-raj',
       category: 'yoga',
       title: 'Raj Yoga',
       subtitle: `${names} em kendra + trikona`,
       body: [
-        `Definição: ${yoga.definition}.`,
+        `${cap(yoga.definition)}.`,
         '',
-        `No seu mapa: ${names} ${rajPlanets.length > 1 ? 'estão' : 'está'} em casa que é simultaneamente kendra e trikona.`,
+        `No seu mapa, ${names} ${rajPlanets.length > 1 ? 'ocupam' : 'ocupa'} uma casa que é, ao mesmo tempo, kendra e trikona — o cruzamento que acende o yoga.`,
         '',
-        `Efeito: ${yoga.effect}.`,
-        '',
-        `Ativação: ${yoga.activation}.`,
+        `O que ele traz — ${yoga.effect}. E se ativa com ${yoga.activation.toLowerCase()}.`,
       ].join('\n'),
       accent: '#FFB74D',
       symbol: '♔',
@@ -382,20 +357,18 @@ export function getYogaBlocks(chart: BirthChart): CompendiumBlock[] {
   }
   if (dhanaInhabitants.length >= 2) {
     const yoga = KEY_YOGAS.dhanaYoga;
-    const names = dhanaInhabitants.map((p) => PLANET_ARCHETYPES[p].pt).join(', ');
+    const names = dhanaInhabitants.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ');
     blocks.push({
       id: 'yoga-dhana',
       category: 'yoga',
       title: 'Dhana Yoga',
       subtitle: `${dhanaInhabitants.length} planetas nas casas da abundância`,
       body: [
-        `Definição: ${yoga.definition}.`,
+        `${cap(yoga.definition)}.`,
         '',
-        `No seu mapa: ${names} habitam as casas 2, 5, 9 ou 11.`,
+        `No seu mapa, ${names} habitam as casas da abundância — 2, 5, 9 ou 11 —, abrindo mais de uma porta para o ganho.`,
         '',
-        `Efeito: ${yoga.effect}.`,
-        '',
-        `Ativação: ${yoga.activation}.`,
+        `O que ele traz — ${yoga.effect}. E se ativa com ${yoga.activation.toLowerCase()}.`,
       ].join('\n'),
       accent: '#F59E0B',
       symbol: '◈',
@@ -416,20 +389,18 @@ export function getYogaBlocks(chart: BirthChart): CompendiumBlock[] {
   });
   if (trikLordsInTrik.length >= 2) {
     const yoga = KEY_YOGAS.viparitaRajaYoga;
-    const names = trikLordsInTrik.map((p) => PLANET_ARCHETYPES[p].pt).join(', ');
+    const names = trikLordsInTrik.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ');
     blocks.push({
       id: 'yoga-viparita',
       category: 'yoga',
       title: 'Viparita Raja Yoga',
       subtitle: `${names} em casas trik (6/8/12)`,
       body: [
-        `Definição: ${yoga.definition}.`,
+        `${cap(yoga.definition)}.`,
         '',
-        `No seu mapa: ${names} — regentes de casas difíceis — estão posicionados em casas difíceis.`,
+        `No seu mapa, ${names} — regentes de casas difíceis (6, 8, 12) — caem dentro dessas mesmas casas. O peso se dobra e, ao se dobrar, se inverte.`,
         '',
-        `Efeito: ${yoga.effect}.`,
-        '',
-        `Ativação: ${yoga.activation}.`,
+        `O que ele traz — ${yoga.effect}. E se ativa com ${yoga.activation.toLowerCase()}.`,
       ].join('\n'),
       accent: '#8B5CF6',
       symbol: '↻',
@@ -452,24 +423,21 @@ export function getLoveBlock(chart: BirthChart): CompendiumBlock {
   const venusSign = SIGN_ARCHETYPES[venus.sign];
 
   const body = [
-    `No Jyotish, amor e parcerias são lidos pelas casas 7 (parceria) e 5 (romance), e pelo planeta Vênus.`,
+    `No amor, o Jyotish observa três pontos: Vênus, a 7ª casa das parcerias e a 5ª do romance.`,
     '',
-    `Vênus em ${venusSign.pt} (${venusSign.keyword}), ${ordinal(venus.house)} casa.`,
-    `Vênus governa: ${venusArch.governs}.`,
-    `Natureza de ${venusSign.pt}: ${venusSign.nature}.`,
+    `Seu Vênus está em ${venusSign.pt} — ${venusSign.nature} — na ${ordinal(venus.house)} casa. É ele quem governa ${venusArch.governs}.`,
     '',
-    `7ª casa (Yuvati Bhava — ${HOUSE_MEANINGS[7].topic}): ${SIGN_ARCHETYPES[house7.sign].pt}.`,
-    `Regente da 7ª casa: ${lord7.pt} (${lord7.keyword}), posicionado na ${ordinal(lord7Pos.house)} casa.`,
-    ...(house7.planetsIn.length > 0
-      ? [`Planetas na 7ª casa: ${house7.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`7ª casa vazia — lida pelo regente ${lord7.pt}.`]),
+    `A 7ª casa, de ${HOUSE_MEANINGS[7].topic}, abre-se em ${SIGN_ARCHETYPES[house7.sign].pt} e é regida por ${lord7.pt}, na ${ordinal(lord7Pos.house)} casa. ` +
+      (house7.planetsIn.length > 0
+        ? `Ali habita${house7.planetsIn.length > 1 ? 'm' : ''} ${house7.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}, colorindo quem cruza o seu caminho como par.`
+        : `Vazia, ela se lê pelo próprio regente.`),
     '',
-    `5ª casa (Putra Bhava — ${HOUSE_MEANINGS[5].topic}): ${SIGN_ARCHETYPES[chart.houses[4].sign].pt}.`,
-    ...(house5.planetsIn.length > 0
-      ? [`Planetas na 5ª casa: ${house5.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`5ª casa vazia — lida pelo regente.`]),
+    `A 5ª casa, do romance e da criatividade, repousa em ${SIGN_ARCHETYPES[chart.houses[4].sign].pt}.` +
+      (house5.planetsIn.length > 0
+        ? ` Com ${house5.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')} presente${house5.planetsIn.length > 1 ? 's' : ''}, o jogo do desejo ganha esse sabor.`
+        : ``),
     '',
-    `Sombra de Vênus: ${venusArch.shadow}.`,
+    `Quando Vênus tropeça, aparece a sombra — ${venusArch.shadow}.`,
   ].join('\n');
 
   return {
@@ -494,20 +462,16 @@ export function getCareerBlock(chart: BirthChart): CompendiumBlock {
   const sunSign = SIGN_ARCHETYPES[sun.sign];
 
   const body = [
-    `No Jyotish, carreira é lida pela 10ª casa (Karma Bhava), pelo Sol e pelo Saturno.`,
+    `A carreira se lê pela 10ª casa — o Karma Bhava —, pelo Sol e por Saturno.`,
     '',
-    `10ª casa (${HOUSE_MEANINGS[10].topic}): ${SIGN_ARCHETYPES[house10.sign].pt}.`,
-    `Regente: ${lord10.pt} (${lord10.keyword}), na ${ordinal(lord10Pos.house)} casa.`,
-    ...(house10.planetsIn.length > 0
-      ? [`Planetas na 10ª casa: ${house10.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`10ª casa vazia — carreira lida pelo regente ${lord10.pt}.`]),
+    `A 10ª casa, de ${HOUSE_MEANINGS[10].topic}, está em ${SIGN_ARCHETYPES[house10.sign].pt}, regida por ${lord10.pt} na ${ordinal(lord10Pos.house)} casa. ` +
+      (house10.planetsIn.length > 0
+        ? `Ali habita${house10.planetsIn.length > 1 ? 'm' : ''} ${house10.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}, marcando o tom da sua missão pública.`
+        : `Vazia, a carreira se lê pelo regente.`),
     '',
-    `Sol em ${sunSign.pt}, ${ordinal(sun.house)} casa.`,
-    `Sol governa: ${PLANET_ARCHETYPES.Sun.governs}.`,
-    `Natureza de ${sunSign.pt}: ${sunSign.nature}.`,
+    `Seu Sol brilha em ${sunSign.pt} — ${sunSign.nature} — na ${ordinal(sun.house)} casa; é dele o ${PLANET_ARCHETYPES.Sun.governs}.`,
     '',
-    `Ketu na ${ordinal(ketu.house)} casa (${HOUSE_MEANINGS[ketu.house].sanskrit}): karma passado nessa área.`,
-    `${PLANET_ARCHETYPES.Ketu.keyword} — ${PLANET_ARCHETYPES.Ketu.governs}.`,
+    `Ketu, na ${ordinal(ketu.house)} casa, aponta um karma já vivido nessa área — ${PLANET_ARCHETYPES.Ketu.keyword.toLowerCase()}, o que pede menos apego ao reconhecimento e mais entrega ao fazer.`,
   ].join('\n');
 
   return {
@@ -530,22 +494,20 @@ export function getMoneyBlock(chart: BirthChart): CompendiumBlock {
   const lord2Pos = chart.planets[house2.signLord];
 
   const body = [
-    `No Jyotish, riqueza é lida pelas casas 2 (acumulação) e 11 (ganhos), e pelo planeta Júpiter.`,
+    `A riqueza se lê pela 2ª casa, da acumulação, pela 11ª, dos ganhos, e por Júpiter, o grande benéfico.`,
     '',
-    `2ª casa (${HOUSE_MEANINGS[2].topic}): ${SIGN_ARCHETYPES[house2.sign].pt}.`,
-    `Regente: ${lord2.pt} (${lord2.keyword}), na ${ordinal(lord2Pos.house)} casa.`,
-    ...(house2.planetsIn.length > 0
-      ? [`Planetas na 2ª casa: ${house2.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`2ª casa vazia — lida pelo regente ${lord2.pt}.`]),
+    `A 2ª casa, de ${HOUSE_MEANINGS[2].topic}, está em ${SIGN_ARCHETYPES[house2.sign].pt}, regida por ${lord2.pt} na ${ordinal(lord2Pos.house)} casa. ` +
+      (house2.planetsIn.length > 0
+        ? `Ali habita${house2.planetsIn.length > 1 ? 'm' : ''} ${house2.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}.`
+        : `Vazia, lê-se pelo regente.`),
     '',
-    `11ª casa (${HOUSE_MEANINGS[11].topic}): ${SIGN_ARCHETYPES[house11.sign].pt}.`,
-    ...(house11.planetsIn.length > 0
-      ? [`Planetas na 11ª casa: ${house11.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`11ª casa vazia.`]),
+    `A 11ª, de ${HOUSE_MEANINGS[11].topic}, repousa em ${SIGN_ARCHETYPES[house11.sign].pt}.` +
+      (house11.planetsIn.length > 0
+        ? ` Com ${house11.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}, os ganhos chegam por essa via.`
+        : ``),
     '',
-    `Júpiter em ${SIGN_ARCHETYPES[jupiter.sign].pt}, ${ordinal(jupiter.house)} casa.`,
-    `Júpiter governa: ${PLANET_ARCHETYPES.Jupiter.governs}.`,
-    ...(jupiter.retrograde ? [`Júpiter retrógrado: abundância via revisão interna.`] : []),
+    `Júpiter, em ${SIGN_ARCHETYPES[jupiter.sign].pt} na ${ordinal(jupiter.house)} casa, governa ${PLANET_ARCHETYPES.Jupiter.governs}.` +
+      (jupiter.retrograde ? ` Retrógrado, a abundância vem por revisão interna, não por expansão fácil.` : ``),
   ].join('\n');
 
   return {
@@ -568,23 +530,22 @@ export function getHealthBlock(chart: BirthChart): CompendiumBlock {
   const ascSign = SIGN_ARCHETYPES[chart.ascendant];
 
   const body = [
-    `No Jyotish, saúde é lida pelo Ascendente (vitalidade geral), 6ª casa (doenças) e 8ª casa (crises/longevidade).`,
+    `A saúde se lê pelo Ascendente, que dá a vitalidade geral, pela 6ª casa das doenças e pela 8ª das crises e da longevidade.`,
     '',
-    `Ascendente em ${ascSign.pt} (${ascSign.keyword}): ${ascSign.nature}.`,
-    `Regente do Ascendente: ${asc.pt} (${asc.keyword}).`,
-    ...(house1.planetsIn.length > 0
-      ? [`Planetas no Ascendente: ${house1.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : []),
+    `Seu Ascendente em ${ascSign.pt} — ${ascSign.nature} — é regido por ${asc.pt}, ${asc.keyword.toLowerCase()}.` +
+      (house1.planetsIn.length > 0
+        ? ` No corpo do mapa, ${house1.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')} reforça${house1.planetsIn.length > 1 ? 'm' : ''} essa porta.`
+        : ``),
     '',
-    `6ª casa (Ari Bhava — ${HOUSE_MEANINGS[6].topic}): ${SIGN_ARCHETYPES[house6.sign].pt}.`,
-    ...(house6.planetsIn.length > 0
-      ? [`Planetas na 6ª casa: ${house6.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`6ª casa vazia — resistência saudável.`]),
+    `A 6ª casa, de ${HOUSE_MEANINGS[6].topic}, está em ${SIGN_ARCHETYPES[house6.sign].pt}. ` +
+      (house6.planetsIn.length > 0
+        ? `Com ${house6.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')} aqui, é onde a vida cobra cuidado.`
+        : `Vazia, sinaliza boa resistência natural.`),
     '',
-    `8ª casa (Randhra Bhava — ${HOUSE_MEANINGS[8].topic}): ${SIGN_ARCHETYPES[house8.sign].pt}.`,
-    ...(house8.planetsIn.length > 0
-      ? [`Planetas na 8ª casa: ${house8.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`8ª casa vazia.`]),
+    `A 8ª, de ${HOUSE_MEANINGS[8].topic}, repousa em ${SIGN_ARCHETYPES[house8.sign].pt}.` +
+      (house8.planetsIn.length > 0
+        ? ` Com ${house8.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}, as transformações são profundas.`
+        : ``),
   ].join('\n');
 
   return {
@@ -608,22 +569,19 @@ export function getFamilyBlock(chart: BirthChart): CompendiumBlock {
   const lord4Pos = chart.planets[house4.signLord];
 
   const body = [
-    `No Jyotish, família é lida pela 4ª casa (mãe/lar), 2ª casa (família próxima) e pela Lua (mente/nutrição).`,
+    `A família se lê pela 4ª casa, da mãe e do lar, pela 2ª, da família próxima, e pela Lua, que rege a nutrição e a mente.`,
     '',
-    `4ª casa (${HOUSE_MEANINGS[4].topic}): ${SIGN_ARCHETYPES[house4.sign].pt}.`,
-    `Regente: ${lord4.pt} (${lord4.keyword}), na ${ordinal(lord4Pos.house)} casa.`,
-    ...(house4.planetsIn.length > 0
-      ? [`Planetas na 4ª casa: ${house4.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`4ª casa vazia — lida pelo regente ${lord4.pt}.`]),
+    `A 4ª casa, de ${HOUSE_MEANINGS[4].topic}, está em ${SIGN_ARCHETYPES[house4.sign].pt}, regida por ${lord4.pt} na ${ordinal(lord4Pos.house)} casa. ` +
+      (house4.planetsIn.length > 0
+        ? `Ali habita${house4.planetsIn.length > 1 ? 'm' : ''} ${house4.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}.`
+        : `Vazia, lê-se pelo regente.`),
     '',
-    `Lua em ${moonSign.pt}, ${ordinal(moon.house)} casa.`,
-    `Lua governa: ${PLANET_ARCHETYPES.Moon.governs}.`,
-    `${moonSign.pt}: ${moonSign.nature}.`,
+    `Sua Lua, em ${moonSign.pt} — ${moonSign.nature} — na ${ordinal(moon.house)} casa, governa ${PLANET_ARCHETYPES.Moon.governs}.`,
     '',
-    `2ª casa (${HOUSE_MEANINGS[2].topic}): ${SIGN_ARCHETYPES[house2.sign].pt}.`,
-    ...(house2.planetsIn.length > 0
-      ? [`Planetas na 2ª casa: ${house2.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(', ')}.`]
-      : [`2ª casa vazia.`]),
+    `A 2ª casa, de ${HOUSE_MEANINGS[2].topic}, repousa em ${SIGN_ARCHETYPES[house2.sign].pt}.` +
+      (house2.planetsIn.length > 0
+        ? ` Com ${house2.planetsIn.map((p) => PLANET_ARCHETYPES[p].pt).join(' e ')}, os laços de sangue pesam nessa textura.`
+        : ``),
   ].join('\n');
 
   return {

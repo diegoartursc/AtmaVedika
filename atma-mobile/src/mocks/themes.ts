@@ -21,6 +21,7 @@ import {
   getHouseBlock,
   getPlanetBlock,
   getMoonNakshatraBlock,
+  getAscendantNakshatraBlock,
   getCurrentDashaBlock,
   getLoveBlock,
   getCareerBlock,
@@ -132,7 +133,7 @@ function buildOverviewTheme(chart: BirthChart): VedicTheme {
         ritual: '✦  identidade  ✦',
         title: `Ascendente\n${signPt(chart.ascendant)}.`,
         subtitle: `Sol em ${signPt(sun.sign)}, ${ordinal(sun.house)} casa.`,
-        body: 'O signo do ascendente é a roupa que sua alma escolheu vestir nesta vida. O Sol é o fogo que ela queima por dentro.',
+        body: getAscendantNakshatraBlock(chart).body,
         metric: { label: 'ascendente', value: signPt(chart.ascendant) },
       },
       {
