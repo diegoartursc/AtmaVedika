@@ -212,7 +212,7 @@ export default function ProfileScreen() {
           {/* Identidade */}
           <View style={styles.identity}>
             <Text variant="ritual" color={semantic.textGold} align="center">
-              ✦  perfil  ✦
+              perfil
             </Text>
             <View style={{ height: spacing.sm }} />
             <Text variant="display" color={semantic.textPrimary} align="center">

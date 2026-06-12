@@ -74,7 +74,7 @@ export default function ReadingScreen() {
       >
         <View style={styles.header}>
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  Primeira leitura  ✦
+            Primeira leitura
           </Text>
         </View>
 

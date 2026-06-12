@@ -122,7 +122,7 @@ export default function EntryScreen() {
 
         <Animated.View style={[styles.brandBlock, brandStyle]}>
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  Conselheiro Védico  ✦
+            Conselheiro Védico
           </Text>
           <View style={styles.brandSpacer} />
           <Text variant="cosmicTitle" color={semantic.textPrimary} align="center">

@@ -133,7 +133,7 @@ export function DailyReadingSheet({
           <View style={{ height: spacing.lg }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  {reading.greeting}, {firstName.toLowerCase()}  ✦
+            {reading.greeting}, {firstName.toLowerCase()}
           </Text>
 
           <View style={{ height: spacing.lg }} />

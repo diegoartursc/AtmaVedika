@@ -37,7 +37,7 @@ export const lineHeights = {
 } as const;
 
 export const letterSpacing = {
-  cosmic: 4,
+  cosmic: 2.4,
   wider: 2,
   wide: 1,
   normal: 0,

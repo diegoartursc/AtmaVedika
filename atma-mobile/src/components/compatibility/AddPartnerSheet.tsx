@@ -138,7 +138,7 @@ export function AddPartnerSheet({
             <View style={{ height: spacing.lg }} />
 
             <Text variant="ritual" color={semantic.textGold} align="center">
-              ✦  adicionar pessoa  ✦
+              adicionar pessoa
             </Text>
 
             <View style={{ height: spacing.sm }} />

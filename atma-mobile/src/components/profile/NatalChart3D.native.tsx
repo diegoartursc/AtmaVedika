@@ -28,7 +28,7 @@ export function NatalChart3D(_: NatalChart3DProps) {
       <Text style={styles.symbol}>⊕</Text>
       <View style={{ height: spacing.lg }} />
       <Text variant="ritual" color={semantic.textGold} align="center">
-        ✦  mapa 3D  ✦
+        mapa 3D
       </Text>
       <View style={{ height: spacing.md }} />
       <Text variant="title" color={semantic.textPrimary} align="center">

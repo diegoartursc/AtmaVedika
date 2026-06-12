@@ -96,7 +96,7 @@ export default function CompatibilityScreen() {
 
           <View style={styles.titleBlock}>
             <Text variant="ritual" color={semantic.textGold} align="center">
-              ✦  compatibilidade  ✦
+              compatibilidade
             </Text>
             <View style={{ height: spacing.sm }} />
             <Text variant="display" color={semantic.textPrimary} align="center">

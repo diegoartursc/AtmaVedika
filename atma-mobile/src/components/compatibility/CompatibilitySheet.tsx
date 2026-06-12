@@ -125,7 +125,7 @@ export function CompatibilitySheet({
           <View style={{ height: spacing.lg }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  compatibilidade  ✦
+            compatibilidade
           </Text>
 
           <View style={{ height: spacing.sm }} />

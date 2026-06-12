@@ -91,7 +91,7 @@ export function InfoSheet({ visible, title, body, onDismiss }: InfoSheetProps) {
           <View style={{ height: spacing.lg }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  {title}  ✦
+            {title}
           </Text>
 
           <View style={{ height: spacing.lg }} />

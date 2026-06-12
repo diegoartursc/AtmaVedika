@@ -49,7 +49,7 @@ interface Step {
 const STEPS: Step[] = [
   {
     key: 'name',
-    ritual: '✦  Como o céu deve te chamar?  ✦',
+    ritual: 'Como o céu deve te chamar?',
     question: 'Seu nome.',
     label: 'nome',
     placeholder: '',
@@ -58,7 +58,7 @@ const STEPS: Step[] = [
   },
   {
     key: 'birthDate',
-    ritual: '✦  O dia em que o céu se abriu  ✦',
+    ritual: 'O dia em que o céu se abriu',
     question: 'Sua data\nde nascimento.',
     label: 'dd / mm / aaaa',
     placeholder: '',
@@ -67,7 +67,7 @@ const STEPS: Step[] = [
   },
   {
     key: 'birthTime',
-    ritual: '✦  A hora exata do primeiro respiro  ✦',
+    ritual: 'A hora exata do primeiro respiro',
     question: 'A hora\ndo seu primeiro\nrespiro.',
     label: 'hh : mm',
     placeholder: '',
@@ -76,7 +76,7 @@ const STEPS: Step[] = [
   },
   {
     key: 'birthPlace',
-    ritual: '✦  Onde a terra te recebeu  ✦',
+    ritual: 'Onde a terra te recebeu',
     question: 'A cidade\nonde você nasceu.',
     label: 'cidade, estado',
     placeholder: '',

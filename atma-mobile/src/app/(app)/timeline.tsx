@@ -156,7 +156,7 @@ export default function TimelineScreen() {
         <View style={styles.header}>
           <View style={styles.headerTopRow}>
             <Text variant="ritual" color={semantic.textGold}>
-              ✦  vimshottari  ✦
+              vimshottari
             </Text>
             <Pressable
               onPress={() => {

@@ -30,6 +30,10 @@ import { LogBox, Platform } from 'react-native';
 
 import { palette } from '@/theme/colors';
 
+// Polish global de web (suavização de fonte, fallback sans, scrollbar/seleção).
+// No native o import é ignorado pelo Expo.
+import '@/global.css';
+
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 // Suprime warnings benignos no web (gesture-handler-2 propaga props RN-only).

@@ -113,7 +113,7 @@ export function PaywallSheet({
           <View style={{ height: spacing.lg }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  você esgotou suas três perguntas  ✦
+            você esgotou suas três perguntas
           </Text>
 
           <View style={{ height: spacing.lg }} />

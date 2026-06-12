@@ -1,0 +1,51 @@
+/**
+ * Atma Vedika — Web global polish
+ *
+ * Importado apenas no web (ignorado no native pelo Expo).
+ * Tira a "cara de navegador padrão": suaviza a renderização das fontes,
+ * garante fallback sans moderno (nunca Times), e refina seleção/scrollbar.
+ */
+
+html,
+body,
+#root {
+  background-color: #020108;
+}
+
+body {
+  /* Fallback moderno enquanto Playfair/Inter carregam — nunca Times New Roman. */
+  font-family: Inter_400Regular, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Helvetica, Arial, sans-serif;
+  /* Renderização premium (Apple-like) em vez do anti-aliasing pesado padrão. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.28);
+  color: #f5f4f0;
+}
+
+/* Scrollbars finas e douradas em vez das cinzas do sistema. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

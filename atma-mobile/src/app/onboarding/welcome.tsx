@@ -65,7 +65,7 @@ export default function WelcomeScreen() {
 
         <Animated.View style={titleStyle}>
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  Primeiro encontro  ✦
+            Primeiro encontro
           </Text>
           <View style={styles.gap} />
           <Text variant="hero" color={semantic.textPrimary} align="center">

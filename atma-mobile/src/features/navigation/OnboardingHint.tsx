@@ -97,7 +97,7 @@ export function OnboardingHint({ visible, onDismiss }: OnboardingHintProps) {
 
       <View style={styles.card}>
         <Text variant="ritual" color={semantic.textGold} align="center">
-          ✦  como ler seu mapa  ✦
+          como ler seu mapa
         </Text>
 
         <View style={styles.headerGap} />

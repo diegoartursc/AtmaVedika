@@ -31,7 +31,7 @@ export default function ChatScreen() {
           <View style={{ height: spacing.xl }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  veda  ✦
+            veda
           </Text>
 
           <View style={{ height: spacing.md }} />

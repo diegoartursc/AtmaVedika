@@ -116,7 +116,7 @@ export function OptionPickerSheet<V extends string>({
           <View style={{ height: spacing.lg }} />
 
           <Text variant="ritual" color={semantic.textGold} align="center">
-            ✦  {title}  ✦
+            {title}
           </Text>
 
           {subtitle ? (

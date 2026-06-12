@@ -64,7 +64,7 @@ export default function HomeScreen() {
       >
         <View style={styles.headerLeft}>
           <Text variant="ritual" color={semantic.textGold}>
-            ✦  {currentTheme.shortName}  ✦
+            {currentTheme.shortName}
           </Text>
           <View style={{ height: spacing.xxs }} />
           <Text variant="caption" color={semantic.textTertiary}>
