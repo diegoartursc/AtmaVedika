@@ -72,6 +72,20 @@ function cap(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+const MONTHS_PT = [
+  'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+  'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro',
+];
+
+/** "2026-08-14" → "14 de agosto de 2026". Datas fora do padrão passam intactas. */
+export function formatDatePt(iso: string): string {
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return iso;
+  const month = MONTHS_PT[Number(m[2]) - 1];
+  if (!month) return iso;
+  return `${Number(m[3])} de ${month} de ${m[1]}`;
+}
+
 // ─── Nakshatras ──────────────────────────────────────────────
 
 export function getMoonNakshatraBlock(chart: BirthChart): CompendiumBlock {
@@ -180,7 +194,7 @@ export function getCurrentDashaBlock(chart: BirthChart): CompendiumBlock {
     ...(next && nextPeriod
       ? [
           '',
-          `Adiante, a partir de ${nextPeriod.startDate}, entra ${next.pt}: ${next.theme}.`,
+          `Adiante, a partir de ${formatDatePt(nextPeriod.startDate)}, entra ${next.pt}: ${next.theme}.`,
         ]
       : []),
   ].join('\n');

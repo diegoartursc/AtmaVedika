@@ -22,6 +22,7 @@ import {
 } from '@expo-google-fonts/playfair-display';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
+import Head from 'expo-router/head';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -95,6 +96,13 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: palette.void.abyss }}>
+      <Head>
+        <title>Atma Vedika</title>
+        <meta
+          name="description"
+          content="Conselheiro védico — seu mapa natal Jyotish lido com profundidade."
+        />
+      </Head>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <StatusBar style="light" />

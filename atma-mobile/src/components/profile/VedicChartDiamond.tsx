@@ -27,11 +27,11 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Line, Polygon, Text as SvgText } from 'react-native-svg';
 
-const AnimatedSvgText = Animated.createAnimatedComponent(SvgText);
-
 import { palette, semantic } from '@/theme/colors';
 import { duration } from '@/theme/motion';
 import type { HouseInfo, PlanetName } from '@/types/chart';
+
+const AnimatedSvgText = Animated.createAnimatedComponent(SvgText);
 
 // ─── Geometria dos 12 polígonos (coords 0..100) ─────────
 

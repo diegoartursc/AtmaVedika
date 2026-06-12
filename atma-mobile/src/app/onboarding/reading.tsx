@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.cosmic,
   },
   stanza: {
+    maxWidth: 640,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.lg,
     alignItems: 'center',

@@ -396,6 +396,7 @@ const styles = StyleSheet.create({
   },
   bodyWrap: {
     width: '100%',
+    maxWidth: 640,
     alignItems: 'center',
     paddingHorizontal: spacing.xs,
   },

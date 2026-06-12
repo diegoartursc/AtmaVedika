@@ -33,7 +33,7 @@ const TEMPLATES: Template[] = [
     match: (q) => /\bnakshatra\b|\b(?:lua|moon)\b/i.test(q),
     build: (_, c) => {
       const n = c.moonNakshatra;
-      return `Sua Lua nasceu em ${n.name}, pada ${n.pada}, regida por ${n.ruler}. Isso te marca antes da palavra. ${n.name} não pede que tu sejas — ${n.name} pede que tu cortes. ${n.ruler} é o juiz silencioso. Cada vez que tu tentas segurar o que não é mais teu, ${n.ruler} aperta. Solta primeiro.`;
+      return `Sua Lua nasceu em ${n.name}, pada ${n.pada}, regida por ${n.ruler}. Isso te marca antes da palavra. ${n.name} não pede que você seja — ${n.name} pede que você corte. ${n.ruler} é o juiz silencioso. Cada vez que você tenta segurar o que não é mais seu, ${n.ruler} aperta. Solte primeiro.`;
     },
   },
   {
@@ -41,14 +41,14 @@ const TEMPLATES: Template[] = [
     build: (_, c) => {
       const s = c.planets.Saturn;
       const r = s.retrograde ? ', retrógrado,' : '';
-      return `Saturno em ${s.sign}${r} na ${s.house}ª casa. Você não perde tempo por escolha — perde tempo porque Saturno te ensinou que tempo vale mais que afeto raso. As pessoas leem isso como frieza. É só o acordo que tu já fizeste com ele: só fica o que aguenta provar.`;
+      return `Saturno em ${s.sign}${r} na ${s.house}ª casa. Você não perde tempo por escolha — perde tempo porque Saturno te ensinou que tempo vale mais que afeto raso. As pessoas leem isso como frieza. É só o acordo que você já fez com ele: só fica o que aguenta provar.`;
     },
   },
   {
     match: (q) => /\brahu\b|\bn[oó]\b/i.test(q),
     build: (_, c) => {
       const r = c.planets.Rahu;
-      return `Rahu em ${r.sign}, ${r.house}ª casa, é a direção que tu não consegues parar de querer, mesmo quando assusta. O que parece obsessão é o sul magnético da alma. Não foges. Vais fundo, com método.`;
+      return `Rahu em ${r.sign}, ${r.house}ª casa, é a direção que você não consegue parar de querer, mesmo quando assusta. O que parece obsessão é o sul magnético da alma. Não fuja. Vá fundo, com método.`;
     },
   },
   {
@@ -56,27 +56,27 @@ const TEMPLATES: Template[] = [
     build: (_, c) => {
       const v = c.planets.Venus;
       const s = c.planets.Saturn;
-      return `Vênus em ${v.sign}, ${v.house}ª casa, te dá a estética do desejo. Mas Saturno em ${s.sign}, casa ${s.house}, é o filtro. Você só ama em camadas. A primeira é educada — a terceira é onde mora tu de verdade. Quem fica até a terceira já entendeu.`;
+      return `Vênus em ${v.sign}, ${v.house}ª casa, te dá a estética do desejo. Mas Saturno em ${s.sign}, casa ${s.house}, é o filtro. Você só ama em camadas. A primeira é educada — a terceira é onde você mora de verdade. Quem fica até a terceira já entendeu.`;
     },
   },
   {
     match: (q) => /\bprop[oó]sito\b|\bdharma\b|\btrabalho\b|\bcarreira\b/i.test(q),
     build: (_, c) => {
-      return `Seu Ascendente em ${c.ascendant} é o portão pelo qual o mundo te entende, mas teu dharma não está no que tu mostras — está na ${c.planets.Sun.house}ª casa, onde o Sol arde em ${c.planets.Sun.sign}. Faz a pergunta de novo: o que tu farias se ninguém estivesse vendo? A resposta é o caminho.`;
+      return `Seu Ascendente em ${c.ascendant} é o portão pelo qual o mundo te entende, mas seu dharma não está no que você mostra — está na ${c.planets.Sun.house}ª casa, onde o Sol arde em ${c.planets.Sun.sign}. Faça a pergunta de novo: o que você faria se ninguém estivesse vendo? A resposta é o caminho.`;
     },
   },
   {
     match: (q) => /\bmedo\b|\bansie(dade)?\b|\bp[aâ]nico\b/i.test(q),
     build: (_, c) => {
       const n = c.moonNakshatra;
-      return `O medo não é teu inimigo — é mensageiro de Ketu, que rege ${n.name}. Ele aparece quando algo no que tu construíste já não corresponde ao que tu és agora. Senta com ele dois minutos. Pergunta: o que aqui não é mais verdade? A resposta vem.`;
+      return `O medo não é seu inimigo — é mensageiro de Ketu, que rege ${n.name}. Ele aparece quando algo no que você construiu já não corresponde ao que você é agora. Sente com ele dois minutos. Pergunte: o que aqui não é mais verdade? A resposta vem.`;
     },
   },
   {
     match: () => true, // fallback
     build: (_, c) => {
       const n = c.moonNakshatra;
-      return `Você é ${n.name}. ${n.ruler} te governa. Isso significa que nenhuma resposta minha vai bater antes que tu pares de procurar fora. Olha. Respira três vezes. A pergunta certa não é a que tu fizeste — é a que aparece quando tu paras de fazer pergunta.`;
+      return `Você é ${n.name}. ${n.ruler} te governa. Isso significa que nenhuma resposta minha vai bater antes que você pare de procurar fora. Olhe. Respire três vezes. A pergunta certa não é a que você fez — é a que aparece quando você para de fazer pergunta.`;
     },
   },
 ];

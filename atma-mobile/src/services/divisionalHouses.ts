@@ -48,7 +48,7 @@ const SIGN_LORD: Record<SignName, PlanetName> = {
   Pisces: 'Jupiter',
 };
 
-const BHAVA: Array<{ name: string; significance: string }> = [
+const BHAVA: { name: string; significance: string }[] = [
   { name: 'Tanu Bhava', significance: 'corpo, personalidade, dharma físico' },
   { name: 'Dhana Bhava', significance: 'riqueza acumulada, família próxima, voz' },
   { name: 'Sahaja Bhava', significance: 'irmãos, coragem, comunicação' },
@@ -71,7 +71,7 @@ export function buildDivisionalHouses(
 
   // Mapa reverso: signo → planetas que estão nele
   const planetsBySign = new Map<SignName, PlanetName[]>();
-  (Object.entries(divisional.planetSigns) as Array<[PlanetName, SignName]>).forEach(
+  (Object.entries(divisional.planetSigns) as [PlanetName, SignName][]).forEach(
     ([planet, sign]) => {
       const list = planetsBySign.get(sign) ?? [];
       list.push(planet);

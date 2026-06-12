@@ -28,7 +28,6 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from 'expo-router/js-tabs';
 
-import { Text } from '@/components/primitives/Text';
 import { TAB_ICONS, type TabRouteName } from './TabIcons';
 import { palette, semantic } from '@/theme/colors';
 import { duration, spring } from '@/theme/motion';
