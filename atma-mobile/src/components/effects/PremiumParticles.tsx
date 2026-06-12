@@ -9,7 +9,7 @@
  */
 
 import { useMemo } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -20,8 +20,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { palette } from '@/theme/colors';
-
-const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get('window');
 
 interface ParticleSeed {
   startX: number;
@@ -34,7 +32,11 @@ interface ParticleSeed {
   color: string;
 }
 
-function seedParticles(count: number): ParticleSeed[] {
+function seedParticles(
+  count: number,
+  screenW: number,
+  screenH: number,
+): ParticleSeed[] {
   // Paleta refinada — mais dourado, menos azul. Sensação áurica.
   const colors = [
     palette.gold.glow,
@@ -50,9 +52,9 @@ function seedParticles(count: number): ParticleSeed[] {
     const r4 = ((i * 311 + 17) % 100) / 100;
 
     return {
-      startX: r1 * SCREEN_W,
-      endX: r2 * SCREEN_W,
-      startY: SCREEN_H + 20 + r3 * 100,
+      startX: r1 * screenW,
+      endX: r2 * screenW,
+      startY: screenH + 20 + r3 * 100,
       endY: -80 - r4 * 100,
       // Partículas mais variáveis em tamanho — algumas grandes pra destaque
       size: 1.2 + r3 * 4.5,
@@ -128,7 +130,11 @@ export interface PremiumParticlesProps {
 }
 
 export function PremiumParticles({ count = 12 }: PremiumParticlesProps) {
-  const seeds = useMemo(() => seedParticles(count), [count]);
+  const { width, height } = useWindowDimensions();
+  const seeds = useMemo(
+    () => seedParticles(count, width, height),
+    [count, width, height],
+  );
 
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>

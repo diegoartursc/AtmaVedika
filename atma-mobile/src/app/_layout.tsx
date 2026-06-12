@@ -3,7 +3,11 @@
  *
  * Carrega fontes sagradas, instala providers e governa a Stack root.
  * Mantém native splash até as fontes estarem prontas (zero flicker).
+ * No web, engaiola tudo numa coluna de celular centralizada (WebFrame).
  */
+
+// IMPORTANTE: roda antes de qualquer outro módulo que meça a janela.
+import '@/web/viewport';
 
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -26,9 +30,16 @@ import Head from 'expo-router/head';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LogBox, Platform } from 'react-native';
+import {
+  LogBox,
+  Platform,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 import { palette } from '@/theme/colors';
+import { FRAME_MAX_WIDTH } from '@/web/viewport';
 
 // Polish global de web (suavização de fonte, fallback sans, scrollbar/seleção).
 // No native o import é ignorado pelo Expo.
@@ -110,16 +121,48 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <StatusBar style="light" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: palette.void.abyss },
-              animation: 'fade',
-              animationDuration: 600,
-            }}
-          />
+          <WebFrame>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: palette.void.abyss },
+                animation: 'fade',
+                animationDuration: 600,
+              }}
+            />
+          </WebFrame>
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
+
+/**
+ * No web, centraliza o app numa coluna de largura de celular sobre o vazio
+ * cósmico. A largura vem de useWindowDimensions já "engaiolada" pelo patch
+ * em '@/web/viewport' (min(janela, FRAME_MAX_WIDTH)). No native, passthrough.
+ */
+function WebFrame({ children }: { children: React.ReactNode }) {
+  const { width } = useWindowDimensions();
+
+  if (Platform.OS !== 'web') return <>{children}</>;
+
+  return (
+    <View style={styles.webOuter}>
+      <View style={[styles.webColumn, { width }]}>{children}</View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  webOuter: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: palette.void.abyss,
+  },
+  webColumn: {
+    flex: 1,
+    maxWidth: FRAME_MAX_WIDTH,
+    overflow: 'hidden',
+  },
+});
